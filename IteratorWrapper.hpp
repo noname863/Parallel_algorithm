@@ -11,58 +11,47 @@ private:
     It last;
     bool useLast;
 public:
-    _IteratorWrapper<It> & operator++();
-    _IteratorWrapper<It> operator++(int);
-    _IteratorWrapper<It> & operator--();
-    _IteratorWrapper<It> operator--(int);
+    alg::_IteratorWrapper<It> & operator++();
+    alg::_IteratorWrapper<It> operator++(int);
+    alg::_IteratorWrapper<It> & operator--();
+    alg::_IteratorWrapper<It> operator--(int);
 
     using It::operator=;
     _IteratorWrapper(const It & original) : It(original) { this->useLast = false; }
-    _IteratorWrapper(It original, It last);
+    _IteratorWrapper(It original, It last) : It(original) { this->useLast = true; this->last = last; }
 };
 
 template<class It>
-_IteratorWrapper<It>::_IteratorWrapper(It original, It last)
+alg::_IteratorWrapper<It> & alg::_IteratorWrapper<It>::operator++()
 {
-    It::It(original);
-    this->last = last;
-    this->useLast = true;
-}
-
-template<class It>
-_IteratorWrapper<It> & _IteratorWrapper<It>::operator++()
-{
-    for(uint8_t i = 0; (i < _num_of_threads) && (!useLast || (*this != last)); ++i)
+    for(uint8_t i = 0; (i < alg::_num_of_threads) && (!useLast || (*this != last)); ++i)
         It::operator++();
     return *this;
 }
 
 template<class It>
-_IteratorWrapper<It> _IteratorWrapper<It>::operator++(int)
+alg::_IteratorWrapper<It> alg::_IteratorWrapper<It>::operator++(int)
 {
-    _IteratorWrapper<It> temp = *this;
+    alg::_IteratorWrapper<It> temp = *this;
     ++*this;
     return temp;
 }
 
 template<class It>
-_IteratorWrapper<It> & _IteratorWrapper<It>::operator--()
+alg::_IteratorWrapper<It> & alg::_IteratorWrapper<It>::operator--()
 {
-    for(uint8_t i = 0; (i < _num_of_threads) && (!useLast || (*this != last)); ++i)
+    for(uint8_t i = 0; (i < alg::_num_of_threads) && (!useLast || (*this != last)); ++i)
         It::operator--();
     return *this;
 }
 
 template<class It>
-_IteratorWrapper<It> _IteratorWrapper<It>::operator--(int)
+alg::_IteratorWrapper<It> alg::_IteratorWrapper<It>::operator--(int)
 {
-    _IteratorWrapper<It> temp = *this;
+    alg::_IteratorWrapper<It> temp = *this;
     --*this;
     return temp;
 }
-
-
-
 
 }
 

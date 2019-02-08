@@ -3,6 +3,9 @@
 #include <thread>
 #include <cstdint>
 
+namespace alg
+{
+
 static uint8_t _num_of_threads = static_cast<uint8_t>((std::thread::hardware_concurrency()) == 0 ? 1 : std::thread::hardware_concurrency());
 
 static std::thread * _threads = new std::thread[_num_of_threads];
@@ -14,6 +17,9 @@ void _joinAllThreads()
     for (; beg != end; ++beg)
         beg->join();
 }
+
+}
+
 
 
 #endif // ALGTHREADS_HPP
