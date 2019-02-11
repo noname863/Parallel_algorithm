@@ -110,7 +110,7 @@ void _inThreadFindIfNotRAit(It first, const It & last, const Func & f, std::atom
 }
 
 template <class It, class Func>
-_ifRAIt<It, It> find_any_if(It first, const It & last, const Func & f)
+alg::_ifRAIt<It, It> find_any_if(It first, const It & last, const Func & f)
 {
     It * splited = alg::_split(first, last);
     std::atomic<It> result = last;
@@ -129,7 +129,7 @@ _ifRAIt<It, It> find_any_if(It first, const It & last, const Func & f)
 }
 
 template <class It, class Func>
-_ifnotRAIt<It, It> find_any_if(It first, const It & last, const Func & f)
+alg::_ifnotRAIt<It, It> find_any_if(It first, const It & last, const Func & f)
 {
     std::atomic<It> result = last;
     for (uint8_t i = 0; i < alg::_num_of_threads; ++i, ++first)
@@ -178,7 +178,7 @@ bool none_of(const It & first, const It & last, const Func & f)
 }
 
 template <class It, class Func>
-_ifRAIt<It, Func> for_each(It first, const It & last, const Func & f)
+alg::_ifRAIt<It, Func> for_each(It first, const It & last, const Func & f)
 {
     It * splited = alg::_split(first, last);
     for (uint8_t i = 0; i < alg::_num_of_threads; ++i)
@@ -191,7 +191,7 @@ _ifRAIt<It, Func> for_each(It first, const It & last, const Func & f)
 }
 
 template <class It, class Func>
-_ifnotRAIt<It, Func> for_each(It first, const It & last, const Func & f)
+alg::_ifnotRAIt<It, Func> for_each(It first, const It & last, const Func & f)
 {
     std::thread * beg = alg::_threads;
     std::thread * end = alg::_threads + alg::_num_of_threads;
@@ -206,7 +206,7 @@ _ifnotRAIt<It, Func> for_each(It first, const It & last, const Func & f)
 }
 
 template <class It, class Func>
-_ifRAIt<It, uint> count_if(It first, const It & last, const Func & f)
+alg::_ifRAIt<It, uint> count_if(It first, const It & last, const Func & f)
 {
     It * splited = alg::_split(first, last);
     std::future<long> * results = new std::future<long>[alg::_num_of_threads];
@@ -224,7 +224,7 @@ _ifRAIt<It, uint> count_if(It first, const It & last, const Func & f)
 }
 
 template <class It, class Func>
-_ifnotRAIt<It, uint> count_if(It first, const It & last, const Func & f)
+alg::_ifnotRAIt<It, uint> count_if(It first, const It & last, const Func & f)
 {
     std::future<long> * results = new std::future<long>[alg::_num_of_threads];
     std::future<long> * beg = results;
@@ -260,7 +260,7 @@ void _inThreadAnyMismatch(It1 first1, const It1 & last1, It2 first2, const It1 &
 }
 
 template <class It1, class It2>
-_ifAllRAIt<std::pair<It1, It2>, It1, It2> mismatch_any(It1 first1, const It1 & last1, It2 first2)
+alg::_ifAllRAIt<std::pair<It1, It2>, It1, It2> mismatch_any(It1 first1, const It1 & last1, It2 first2)
 {
     It1 * splited = alg::_split(first1, last1);
     std::atomic<alg::_pair<It1, It2>> result = alg::_make_pair(last1, last1);
@@ -279,7 +279,7 @@ _ifAllRAIt<std::pair<It1, It2>, It1, It2> mismatch_any(It1 first1, const It1 & l
 }
 
 template <class It1, class It2>
-_ifAnyNotRAIt<std::pair<It1, It2>, It1, It2> mismatch_any(It1 first1, const It1 & last1, It2 first2)
+alg::_ifAnyNotRAIt<std::pair<It1, It2>, It1, It2> mismatch_any(It1 first1, const It1 & last1, It2 first2)
 {
     std::atomic<alg::_pair<It1, It2>> result(alg::_make_pair(last1, first2));
     std::thread * beg = alg::_threads;
@@ -300,7 +300,7 @@ bool equal(It1 first1, const It1 & last1, It2 first2)
 }
 
 template <class InputIt, class OutputIt, class Func>
-_ifAllRAIt<void, InputIt, OutputIt> transform(InputIt first1, const InputIt & last1, OutputIt first2, const Func & f)
+alg::_ifAllRAIt<void, InputIt, OutputIt> transform(InputIt first1, const InputIt & last1, OutputIt first2, const Func & f)
 {
     size_t * splited = alg::_splitSize(last1 - first1);
     for (uint8_t i = 0; i < alg::_num_of_threads; first1 += splited[i], first2 += splited[i], ++i)
@@ -312,7 +312,7 @@ _ifAllRAIt<void, InputIt, OutputIt> transform(InputIt first1, const InputIt & la
 }
 
 template <class InputIt, class OutputIt, class Func>
-_ifAnyNotRAIt<void, InputIt, OutputIt> transform(InputIt first1, const InputIt & last1, OutputIt first2, const Func & f)
+alg::_ifAnyNotRAIt<void, InputIt, OutputIt> transform(InputIt first1, const InputIt & last1, OutputIt first2, const Func & f)
 {
     for (uint8_t i = 0; i < alg::_num_of_threads; ++first1, ++first2, ++i)
     {
@@ -325,7 +325,7 @@ _ifAnyNotRAIt<void, InputIt, OutputIt> transform(InputIt first1, const InputIt &
 }
 
 template <class InputIt1, class InputIt2, class OutputIt, class Func>
-_ifAllRAIt<void, InputIt1, InputIt2, OutputIt> transform(InputIt1 first1, const InputIt1 & last1, InputIt2 first2, OutputIt first3, const Func & f)
+alg::_ifAllRAIt<void, InputIt1, InputIt2, OutputIt> transform(InputIt1 first1, const InputIt1 & last1, InputIt2 first2, OutputIt first3, const Func & f)
 {
     size_t * splited = alg::_splitSize(last1 - first1);
     for (uint8_t i = 0; i < alg::_num_of_threads; first1 += splited[i], first2 += splited[i], first3 += splited[i], ++i)
@@ -337,7 +337,7 @@ _ifAllRAIt<void, InputIt1, InputIt2, OutputIt> transform(InputIt1 first1, const 
 }
 
 template <class InputIt1, class InputIt2, class OutputIt, class Func>
-_ifAnyNotRAIt<void, InputIt1, InputIt2, OutputIt> transform(InputIt1 first1, const InputIt1 & last1, InputIt2 first2, OutputIt first3, const Func & f)
+alg::_ifAnyNotRAIt<void, InputIt1, InputIt2, OutputIt> transform(InputIt1 first1, const InputIt1 & last1, InputIt2 first2, OutputIt first3, const Func & f)
 {
     for (uint8_t i = 0; i < alg::_num_of_threads; ++first1, ++first2, ++first3, ++i)
     {
@@ -365,7 +365,7 @@ void _oneThreadTransformN(InputIt1 first1, size_t n, InputIt2 first2, OutputIt f
 }
 
 template <class InputIt, class OutputIt, class Func>
-_ifAllRAIt<void, InputIt, OutputIt> transform_n(InputIt first1, size_t n, OutputIt first2, const Func & f)
+alg::_ifAllRAIt<void, InputIt, OutputIt> transform_n(InputIt first1, size_t n, OutputIt first2, const Func & f)
 {
     size_t * splited = alg::_splitSize(n);
     for (uint8_t i = 0; i < alg::_num_of_threads; first1 += splited[i], first2 += splited[i], ++i)
@@ -377,7 +377,7 @@ _ifAllRAIt<void, InputIt, OutputIt> transform_n(InputIt first1, size_t n, Output
 }
 
 template <class InputIt, class OutputIt, class Func>
-_ifAnyNotRAIt<void, InputIt, OutputIt> transform_n(InputIt first1, size_t n, OutputIt first2, const Func & f)
+alg::_ifAnyNotRAIt<void, InputIt, OutputIt> transform_n(InputIt first1, size_t n, OutputIt first2, const Func & f)
 {
     size_t * splited = alg::_splitSize(n);
     for (uint8_t i = 0; i < alg::_num_of_threads; ++first1, ++first2, ++i)
@@ -392,7 +392,7 @@ _ifAnyNotRAIt<void, InputIt, OutputIt> transform_n(InputIt first1, size_t n, Out
 }
 
 template <class InputIt1, class InputIt2, class OutputIt, class Func>
-_ifAllRAIt<void, InputIt1, InputIt2, OutputIt> transform_n(InputIt1 first1, size_t n, InputIt2 first2, OutputIt first3, const Func & f)
+alg::_ifAllRAIt<void, InputIt1, InputIt2, OutputIt> transform_n(InputIt1 first1, size_t n, InputIt2 first2, OutputIt first3, const Func & f)
 {
     size_t * splited = alg::_splitSize(n);
     for (uint8_t i = 0; i < alg::_num_of_threads; first1 += splited[i], first2 += splited[i], first3 += splited[i], ++i)
@@ -404,7 +404,7 @@ _ifAllRAIt<void, InputIt1, InputIt2, OutputIt> transform_n(InputIt1 first1, size
 }
 
 template <class InputIt1, class InputIt2, class OutputIt, class Func>
-_ifAnyNotRAIt<void, InputIt1, InputIt2, OutputIt> transform_n(InputIt1 first1, size_t n, InputIt2 first2, OutputIt first3, const Func & f)
+alg::_ifAnyNotRAIt<void, InputIt1, InputIt2, OutputIt> transform_n(InputIt1 first1, size_t n, InputIt2 first2, OutputIt first3, const Func & f)
 {
     size_t * splited = alg::_splitSize(n);
     for (uint8_t i = 0; i < alg::_num_of_threads; ++first1, ++first2, ++first3, ++i)
@@ -434,7 +434,7 @@ void copy_n(InputIt first1, size_t n, OutputIt first2)
 template <class InputIt, class OutputIt>
 void copy_backward(InputIt first1, const InputIt & last1, OutputIt last2)
 {
-    alg::transform(first1, last1, std::make_reverse_iterator(last2), [](const auto & item) { return item; });
+    alg::transform(std::make_reverse_iterator(last1), std::make_reverse_iterator(first1), std::make_reverse_iterator(last2), [](const auto & item) { return item; });
 }
 
 template <class InputIt, class OutputIt>
@@ -501,6 +501,40 @@ template <class It, typename T>
 void replace(It first1, const It & last1, const T & old_value, const T & new_value)
 {
     alg::for_each(first1, last1, [&old_value, &new_value](auto & item) { if (item == old_value) item = new_value; });
+}
+
+template <class It1, class It2, class Func>
+void _zipForEach(It1 first1, const It1 & last1, It2 first2, const Func & f)
+{
+    for (;first1 != last1; ++first1, ++first2)
+        f(*first1, *first2);
+}
+
+template <class It1, class It2, class Func>
+alg::_ifAllRAIt<void, It1, It2> zip_for_each(It1 first1, const It1 & last1, It2 first2, const Func & f)
+{
+    size_t * splited = alg::_splitSize(last1 - first1);
+    for (uint8_t i = 0; i < _num_of_threads; first1 += splited[i], first2 += splited[i], ++i)
+    {
+        alg::_threads[i] = std::thread(alg::_zipForEach<It1, It2, Func>, first1, first1 + splited[i], first2, std::cref(f));
+    }
+    _joinAllThreads();
+    delete[] splited;
+}
+
+template <class It1, class It2, class Func>
+alg::_ifAnyNotRAIt<void, It1, It2> zip_for_each(It1 first1, const It1 & last1, It2 first2, const Func & f)
+{
+    std::thread * beg = alg::_threads;
+    std::thread * end = alg::_threads + alg::_num_of_threads;
+    for (; beg != end; ++first1, ++first2, ++beg)
+    {
+        *beg = std::thread(alg::_zipForEach<alg::_IteratorWrapper<It1>, alg::_IteratorWrapper<It2>, Func>,
+                           alg::_IteratorWrapper<It1>(first1, last1),
+                           alg::_IteratorWrapper<It1>(last1),
+                           alg::_IteratorWrapper<It2>(first2), std::cref(f));
+    }
+    _joinAllThreads();
 }
 
 }
